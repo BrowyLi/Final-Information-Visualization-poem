@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Scrollytelling Poems</title>
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+  </head>
+  <body>
+    <main class="wrapper">
+      <div class="left-column">
+        <div class = "left-top-row">
+          <header>
+            <h1 class="title">Break the Gap</h1>
+          </header>
+        </div>
+        <div class="left-column-content">
+          <div class="filler-div"></div>
+        </div>
+      </div>
+      <div class="right-column">
+        <div class = "right-top-row">
+          <div class ="right-top-left">
+            <button class="verse-button left-button" id="backward-button">&Delta;</button>
+            <button class="verse-button2 left-button2" id="backward-button2">&Delta;&Delta;</button>
+          </div>
+          <div class ="right-top-mid">
+            <div class="filler-div"></div>
+            <ul class="verse" id="verse1">
+              <li class="line" id="line1">Dim rooms, kids can hardly read</li>
+              <li class="line" id="line2">City lights, young minds free to fly</li>
+              <li class="line" id="line3">With books, their vision widened</li>
+              <li class="line" id="line4">without food or drink, one waits to die</li>
+            </ul>
+
+            <ul class="verse" id="verse2">
+              <li class="line" id="line1">Weak candlelight brightens slum</li>
+              <li class="line" id="line2">Wealthy clans dwell in grand rooms</span></li>
+              <li class="line" id="line3">Education should freely stream</li>
+              <li class="line" id="line4">Let knowledge light every dream</li>
+            </ul>
+
+            <ul class="verse" id="verse3">
+              <li class="line" id="line1">Money flows to upper stratum</li>
+              <li class="line" id="line2">Others stay at sewer bottom</li>
+              <li class="line" id="line3">Inequality quietly looms</li>
+              <li class="line" id="line4">No one wants to mind their boom</li>
+            </ul>
+
+            <ul class="verse" id="verse4">
+              <li class="line" id="line1">All should break the barrier down</li>
+              <li class="line" id="line2">End the curse of fortune doom</li>
+              <li class="line" id="line3">Even live in those poor towns</li>
+              <li class="line" id="line4">Light and wealth will shine their rooms</li>
+            </ul>
+            <div class="filler-div"></div>
+          </div>
+          <div class ="right-top-right">
+            <button class="verse-button right-button" id="forward-button">&nabla;</button>
+            <button class="verse-button2 right-button2" id="forward-button2">&nabla;&nabla;</button>
+          </div>
+        </div>
+        <div class="right-bottom-row">
+          <svg id="svg"></svg>
+          <button class="zoom-button" id="zoom-in">+</button>
+          <button class="zoom-button" id="zoom-out">-</button>
+          <select class="dropdown" id="dropdown">
+            <option value="option1">Bar Chart</option>
+            <option value="option2">Pie Chart</option>
+          </select>
+        </div>
+      </div>
+    </main>
+    <script src="main.js"></script>
+  </body>
+</html>
