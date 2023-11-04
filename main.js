@@ -8,8 +8,7 @@ let keyframes = [
     },
     {
         activeVerse: 1,
-        activeLines: [2],
-        svgUpdate: [drawQuintileData, () => updateLeftColumnContent(0)]
+        activeLines: [2]
     },
     {
         activeVerse: 1,
@@ -21,7 +20,8 @@ let keyframes = [
     },
     {
         activeVerse: 2,
-        activeLines: [1]
+        activeLines: [1],
+        svgUpdate: [drawQuintileData, () => updateLeftColumnContent(0)]
     },
     {
         activeVerse: 2,
@@ -342,9 +342,6 @@ function zoomOut() {
     xScale.range([0, chartWidth * currentZoomLevel]).padding(0.1 / currentZoomLevel);
     updateBarChart(quintileChartData);
 }
-
-
-  
 
 async function initialise() {
     await loadData();
