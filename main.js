@@ -4,11 +4,12 @@ let keyframes = [
     {
         activeVerse: 1,
         activeLines: [1],
-        svgUpdate: [drawQuintileData, () => updateLeftColumnContent(0)]
+        svgUpdate: [drawLocationData, () => updateLeftColumnContent(0)]
     },
     {
         activeVerse: 1,
-        activeLines: [2]
+        activeLines: [2],
+        svgUpdate: [drawQuintileData, () => updateLeftColumnContent(0)]
     },
     {
         activeVerse: 1,
@@ -70,6 +71,7 @@ let keyframes = [
 
 let svg = d3.select("#svg");
 let quintileChartData;
+let locationChartData;
 
 let chart;
 let chartWidth;
@@ -99,12 +101,21 @@ async function loadData() {
     await d3.json("data/quintile.json").then(data => {
         quintileChartData = data;
     });
+    await d3.json("data/location.json").then(data => {
+        locationChartData = data;
+    });
 }
 
 function drawQuintileData() {
     console.log("Drawing the quintile data bar chart");
     console.log(quintileChartData);
-    updateBarChart(quintileChartData, "Education distribution of different Quintile in US");
+    updateBarChart(quintileChartData, "Education distribution of different Quintiles in US");
+}
+
+function drawLocationData() {
+    console.log("Drawing the location data bar chart");
+    console.log(locationChartData);
+    updateBarChart(locationChartData, "Education distribution of different Locations in US");
 }
 
 function updateBarChart(data, title = "") {
@@ -119,7 +130,13 @@ function updateBarChart(data, title = "") {
     const series = d3.stack().keys(blocks)(data);
     console.log("Stacked data", series);
 
-    xScale.domain(data.map(d => d.Wealth));
+    if (data.length > 0 && data[0].hasOwnProperty('Location')) {
+        xScale.domain(data.map(d => d.Location));
+    } 
+   
+    else if (data.length > 0 && data[0].hasOwnProperty('Wealth')) {
+        xScale.domain(data.map(d => d.Wealth));
+    }
 
     const maxVal = d3.max(series, d => d3.max(d, d => d[1]));
     yScale.domain([0, maxVal]).nice();
@@ -131,7 +148,19 @@ function updateBarChart(data, title = "") {
         .attr("class", "bar-group")
         .attr("fill", (d, i) => colorScale(i));
 
-    chart.selectAll(".bar-group")
+    if (data.length > 0 && data[0].hasOwnProperty('Location')) {
+        chart.selectAll(".bar-group")
+        .selectAll("rect")
+        .data(d => d)
+        .join("rect")
+        .attr("x", d => xScale(d.data.Location))
+        .attr("width", xScale.bandwidth())
+        .attr("y", d => yScale(d[1]))
+        .attr("height", d => yScale(d[0]) - yScale(d[1]));
+    } 
+   
+    else if (data.length > 0 && data[0].hasOwnProperty('Wealth')) {
+        chart.selectAll(".bar-group")
         .selectAll("rect")
         .data(d => d)
         .join("rect")
@@ -139,6 +168,7 @@ function updateBarChart(data, title = "") {
         .attr("width", xScale.bandwidth())
         .attr("y", d => yScale(d[1]))
         .attr("height", d => yScale(d[0]) - yScale(d[1]));
+    }
 
     chart.select(".x-axis")
         .transition()
