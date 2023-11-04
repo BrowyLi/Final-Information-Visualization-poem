@@ -50,6 +50,16 @@ body,p {
   align-items: center;
 }
 
+.legend-container {
+  flex:1;
+  width: 100%;
+}
+
+.content{
+  flex: 4;
+  width: 100%;
+}
+
 
 .right-column {
   flex: 4; 

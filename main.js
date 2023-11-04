@@ -72,6 +72,7 @@ let keyframes = [
 let svg = d3.select("#svg");
 let quintileChartData;
 let locationChartData;
+let chartNum;
 
 let chart;
 let chartWidth;
@@ -133,10 +134,12 @@ function updateBarChart(data, title = "") {
 
     if (data.length > 0 && data[0].hasOwnProperty('Location')) {
         xScale.domain(data.map(d => d.Location));
+        chartNum = 1;
     } 
    
     else if (data.length > 0 && data[0].hasOwnProperty('Wealth')) {
         xScale.domain(data.map(d => d.Wealth));
+        chartNum = 2;
     }
 
     const maxVal = d3.max(series, d => d3.max(d, d => d[1]));
@@ -374,13 +377,25 @@ const zoomLevels = {
 function zoomIn() {
     currentZoomLevel *= zoomLevels.in;
     xScale.range([0, chartWidth * currentZoomLevel]).padding(0.1 / currentZoomLevel);
-    updateBarChart(quintileChartData);
+    if (chartNum == 1) {
+        updateBarChart(locationChartData);
+    } 
+   
+    else if (chartNum == 2) {
+        updateBarChart(quintileChartData);
+    }
 }
 
 function zoomOut() {
     currentZoomLevel *= zoomLevels.out;
     xScale.range([0, chartWidth * currentZoomLevel]).padding(0.1 / currentZoomLevel);
-    updateBarChart(quintileChartData);
+    if (chartNum == 1) {
+        updateBarChart(locationChartData);
+    } 
+   
+    else if (chartNum == 2) {
+        updateBarChart(quintileChartData);
+    }
 }
 
 async function initialise() {
