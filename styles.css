@@ -154,6 +154,10 @@ svg {
   overflow: auto;    
 }
 
+#legend-svg{
+  background-color: #5d7f97;
+}
+
 .bar rect {
   shape-rendering: crispEdges;
 }

@@ -4,7 +4,7 @@ let keyframes = [
     {
         activeVerse: 1,
         activeLines: [1],
-        svgUpdate: [drawLocationData, () => updateLeftColumnContent(0)]
+        svgUpdate: [drawLocationData]
     },
     {
         activeVerse: 1,
@@ -21,7 +21,7 @@ let keyframes = [
     {
         activeVerse: 2,
         activeLines: [1],
-        svgUpdate: [drawQuintileData, () => updateLeftColumnContent(0)]
+        svgUpdate: [drawQuintileData]
     },
     {
         activeVerse: 2,
@@ -92,7 +92,6 @@ document.getElementById("backward-button").addEventListener("click", backwardCli
 document.getElementById("forward-button2").addEventListener("click", forwardVerseClicked);
 document.getElementById("backward-button2").addEventListener("click", backwardVerseClicked);
 // document.addEventListener('mousewheel', scrollControl, {passive: false});
-// Add event listeners to the zoom buttons
 document.getElementById('zoom-in').addEventListener('click', zoomIn);
 document.getElementById('zoom-out').addEventListener('click', zoomOut);
 
@@ -110,12 +109,14 @@ function drawQuintileData() {
     console.log("Drawing the quintile data bar chart");
     console.log(quintileChartData);
     updateBarChart(quintileChartData, "Education distribution of different Quintiles in US");
+    drawLegend();
 }
 
 function drawLocationData() {
     console.log("Drawing the location data bar chart");
     console.log(locationChartData);
     updateBarChart(locationChartData, "Education distribution of different Locations in US");
+    drawLegend();
 }
 
 function updateBarChart(data, title = "") {
@@ -195,6 +196,45 @@ function updateBarChart(data, title = "") {
     }
 }
 
+function drawLegend() {
+    const blocks = ['Block1', 'Block2', 'Block3', 'Block4', 'Block5'];
+    const colorScale = d3.scaleOrdinal()
+      .domain(blocks)
+      .range(['#0D3B66', '#14466A', '#1E6F72', '#3C8DAD', '#28AFB0']);
+    const legendSvg = d3.select("#legend-svg");
+
+    const legendMargin = { top: 10, left: 20, bottom: 10, right: 20 };
+    const legendItemSize = 18;
+    const legendSpacing = 6; 
+    const legendWidth = +legendSvg.style('width').replace('px', '');
+    const legendHeight = blocks.length * (legendItemSize + legendSpacing);
+    legendSvg.attr("height", legendHeight + legendMargin.top + legendMargin.bottom);
+  
+    const legend = legendSvg.append("g")
+      .attr("transform", `translate(${legendMargin.left},${legendMargin.top})`);
+
+    legend.selectAll("rect")
+      .data(blocks)
+      .enter()
+      .append("rect")
+      .attr("width", legendItemSize)
+      .attr("height", legendItemSize)
+      .attr("y", (d, i) => i * (legendItemSize + legendSpacing))
+      .style("fill", colorScale);
+  
+    legend.selectAll("text")
+      .data(blocks)
+      .enter()
+      .append("text")
+      .attr("x", legendItemSize + legendSpacing)
+      .attr("y", (d, i) => i * (legendItemSize + legendSpacing) + (legendItemSize / 2))
+      .style("alignment-baseline", "central")
+      .text(d => d);
+    
+    console.log("draw legend done")
+  }
+  
+  
 
 function forwardClicked() {
     if (keyframeIndex < keyframes.length - 1) {
