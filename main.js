@@ -132,9 +132,23 @@ function handleChartChange() {
             'Block4': '#3C8DAD',
             'Block5': '#28AFB0'
             });
+        updateLegendColors({
+            'Block1': '#0D3B66',
+            'Block2': '#14466A',
+            'Block3': '#1E6F72',
+            'Block4': '#3C8DAD',
+            'Block5': '#28AFB0'
+            });
     } 
     else if (selectedValue == 'option2') {
         updateBarColors({
+            'Block1': '#FF4136',
+            'Block2': '#0074D9', 
+            'Block3': '#2ECC40', 
+            'Block4': '#FFDC00', 
+            'Block5': '#E6E6E6'
+            });
+        updateLegendColors({
             'Block1': '#FF4136',
             'Block2': '#0074D9', 
             'Block3': '#2ECC40', 
@@ -310,10 +324,18 @@ function drawLegend() {
         blocks = ["Primary completion rate", "Lower secondary completion rate", 
         "Upper secondary completion rate", "Lower sec comp rate for age 15-24", "Upper se comp rate for age 20-29"];
     }
-
-    const colorScale = d3.scaleOrdinal()
-        .domain(blocks)
-        .range(['#0D3B66', '#14466A', '#1E6F72', '#3C8DAD', '#28AFB0']);
+    const selectedValue = d3.select('#dropdown').node().value;
+    let colorScale;
+    if (selectedValue == 'option1') {
+         colorScale = d3.scaleOrdinal()
+            .domain(blocks)
+            .range(['#0D3B66', '#14466A', '#1E6F72', '#3C8DAD', '#28AFB0']);
+    }
+    else if (selectedValue == 'option2') {
+        colorScale = d3.scaleOrdinal()
+           .domain(blocks)
+           .range(['#FF4136','#0074D9', '#2ECC40', '#FFDC00', '#E6E6E6']);
+   }
     const legendSvg = d3.select("#legend-svg");
     const legendMargin = { top: 10, left: 20, bottom: 10, right: 20 };
     const legendItemSize = 18;
@@ -348,6 +370,19 @@ function drawLegend() {
 
     console.log("draw legend done");
 }
+
+function updateLegendColors(colorMapping) {
+    const blocks = ['Block1', 'Block2', 'Block3', 'Block4', 'Block5'];
+    const colorScale = d3.scaleOrdinal()
+        .domain(blocks)
+        .range(blocks.map(block => colorMapping[block] || '#000'));
+    const legendSvg = d3.select("#legend-svg");
+    const legend = legendSvg.select("g");
+    legend.selectAll("rect")
+        .data(blocks)
+        .style("fill", colorScale); 
+}
+
 
 function forwardClicked() {
     if (keyframeIndex < keyframes.length - 1) {
