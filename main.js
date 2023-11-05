@@ -201,12 +201,15 @@ function updateBarChart(data, title = "") {
         .attr("height", d => yScale(d[0]) - yScale(d[1]))
         .on("mouseover", function(event, d) {
             d3.select(this).style("opacity", 0.7);
-            const dataString = Object.entries(d.data).map(([key, value]) => `${key}: ${value}`).join('<br>');
+            const key = d3.select(this.parentNode).datum().key;
+            const displayName = getDisplayName(key);
+            const blockData = d.data[key];
+            const dataString = `${displayName}: ${blockData}`;
             tooltip
                 .html(dataString)
                 .style('display', 'block')
-                .style('left', `${event.pageX + 10}px`)
-                .style('top', `${event.pageY + 10}px`);
+                .style('left', `${event.pageX - 400}px`)
+                .style('top', `${event.pageY - 200}px`);
         })
         .on("mouseout", function() {
             d3.select(this).style("opacity", 1);
@@ -225,12 +228,15 @@ function updateBarChart(data, title = "") {
         .attr("height", d => yScale(d[0]) - yScale(d[1]))
         .on("mouseover", function(event, d) {
             d3.select(this).style("opacity", 0.7);
-            const dataString = Object.entries(d.data).map(([key, value]) => `${key}: ${value}`).join('<br>');
+            const key = d3.select(this.parentNode).datum().key;
+            const displayName = getDisplayName(key);
+            const blockData = d.data[key];
+            const dataString = `${displayName}: ${blockData}`;
             tooltip
                 .html(dataString)
                 .style('display', 'block')
-                .style('left', `${event.pageX + 10}px`)
-                .style('top', `${event.pageY + 10}px`);
+                .style('left', `${event.pageX - 400}px`)
+                .style('top', `${event.pageY - 200}px`);
         })
         .on("mouseout", function() {
             d3.select(this).style("opacity", 1);
@@ -262,6 +268,29 @@ function updateBarChart(data, title = "") {
             });
     }
 }
+
+function getDisplayName(key) {
+    let nameMapping;
+    if(chartNum == 1){
+        nameMapping = {
+            'Block1': 'Less than high school',
+            'Block2': 'High school',
+            'Block3': 'Some college',
+            'Block4': 'Associate degree',
+            'Block5': 'Bachelor\'s degree or higher'
+        };
+    }
+    else if(chartNum = 2){
+        nameMapping = {
+            'Block1': 'Primary completion rate',
+            'Block2': 'Lower secondary completion rate',
+            'Block3': 'Upper secondary completion rate',
+            'Block4': 'Lower sec comp rate for age 15-24',
+            'Block5': 'Upper se comp rate for age 20-29'
+        };
+    }
+    return nameMapping[key];
+  }
 
 function updateBarColors(blockColorMapping) {
     const blocks = ['Block1', 'Block2', 'Block3', 'Block4', 'Block5'];

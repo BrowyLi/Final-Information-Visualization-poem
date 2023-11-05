@@ -226,7 +226,6 @@ svg {
   background: rgba(0, 0, 0, 0.75);
   color: white;
   border-radius: 5px;
-  pointer-events: none; /* This makes it so the tooltip doesn't interfere with mouse events */
-  z-index: 1000;
+  pointer-events: none;
 }
 
