@@ -4,7 +4,7 @@ let keyframes = [
     {
         activeVerse: 1,
         activeLines: [1],
-        svgUpdate: [drawLocationData]
+        svgUpdate: [drawLocationData, ()=>updateLeftColumnContent(0)]
     },
     {
         activeVerse: 1,
@@ -322,7 +322,7 @@ function updateActiveVerse(id) {
 
 function updateLeftColumnContent(index) {
     if (index >= 0 && index < textData.length) {
-      document.querySelector('.left-column-content').innerText = textData[index];
+      document.querySelector('.content').innerText = textData[index];
     } else {
       console.error("Index out of bounds");
     }
