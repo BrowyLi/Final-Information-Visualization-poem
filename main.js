@@ -81,7 +81,12 @@ let chartHeight;
 let xScale;
 let yScale;
 let textData = [
-    "Introduction: \n This chart shows the education level difference between rual and urban area. There are more people who earn a higher degree in Urban places.",
+    "Introduction: \n \There are discernible distinctions between rural and urban places in the US educational landscape.\
+    There is a slight greater rate of early educational attrition in rural areas (13% against 11%), when the population has less than a high school education.\
+    Additionally, 35% of high school graduates in rural areas complete their education, compared to 25% in metropolitan areas. Higher education reverses this trend:\
+    in rural areas, just 10% of people have an associate degree, and 21% have a bachelor's degree or beyond; in urban areas, these numbers jump to 9% and a significantly higher 36%, respectively.\
+    Based on available statistics, it appears that a bigger percentage of people live in urban regions than in less populous places.\
+    This could potentially be attributed to the variety of opportunities and easier access to higher education that these areas offer.\ ",
     "Introduction: \n This chart"
   ];
 
@@ -365,7 +370,6 @@ function drawLegend() {
         .attr("x", legendItemSize + legendSpacing)
         .attr("y", (d, i) => i * (legendItemSize + legendSpacing) + (legendItemSize / 2))
         .attr("dy", "0.35em")
-        .style("alignment-baseline", "middle")
         .text(d => d);
 
     console.log("draw legend done");

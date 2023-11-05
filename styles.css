@@ -58,6 +58,7 @@ body,p {
 .content{
   flex: 4;
   width: 100%;
+  color: black;
 }
 
 
@@ -167,6 +168,7 @@ svg {
 #legend-svg{
   background-color: #5d7f97;
   overflow: auto;
+  color: white;
 }
 
 .bar rect {
