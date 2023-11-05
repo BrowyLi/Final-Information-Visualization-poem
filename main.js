@@ -21,7 +21,7 @@ let keyframes = [
     {
         activeVerse: 2,
         activeLines: [1],
-        svgUpdate: [drawQuintileData]
+        svgUpdate: [drawQuintileData, ()=>updateLeftColumnContent(1)]
     },
     {
         activeVerse: 2,
@@ -80,9 +80,8 @@ let chartHeight;
 let xScale;
 let yScale;
 let textData = [
-    "This is the interactive section of the blocks, will be developed in M5.",
-    "Here's the second block of text with more information.",
-    "Finally, this is the third block of text."
+    "Introduction: \n This chart shows the education level difference between rual and urban area. There are more people who earn a higher degree in Urban places.",
+    "Introduction: \n This chart"
   ];
 
 let isPie = false;
@@ -92,7 +91,7 @@ document.getElementById("forward-button").addEventListener("click", forwardClick
 document.getElementById("backward-button").addEventListener("click", backwardClicked);
 document.getElementById("forward-button2").addEventListener("click", forwardVerseClicked);
 document.getElementById("backward-button2").addEventListener("click", backwardVerseClicked);
-// document.addEventListener('mousewheel', scrollControl, {passive: false});
+document.addEventListener('mousewheel', scrollControl, {passive: false});
 document.getElementById('zoom-in').addEventListener('click', zoomIn);
 document.getElementById('zoom-out').addEventListener('click', zoomOut);
 
@@ -338,7 +337,6 @@ function updateLeftColumnContent(index) {
     }
   }
   
-
 function initialiseSVG() {
     const width = svg.node().getBoundingClientRect().width;
     const height = svg.node().getBoundingClientRect().height;
