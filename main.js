@@ -403,7 +403,8 @@ function backwardClicked() {
 }
 
 function forwardVerseClicked() {
-    if (keyframeIndex < keyframes.length - 1) {
+    if (keyframeIndex < keyframes.length - 4) {
+        console.log(keyframeIndex)
         keyframeIndex = keyframeIndex + 4 - keyframeIndex % 4;
         drawKeyframe(keyframeIndex);
     }
