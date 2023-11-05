@@ -73,6 +73,7 @@ let svg = d3.select("#svg");
 let quintileChartData;
 let locationChartData;
 let chartNum;
+let colorScale;
 
 let chart;
 let chartWidth;
@@ -94,6 +95,7 @@ document.getElementById("backward-button2").addEventListener("click", backwardVe
 document.addEventListener('mousewheel', scrollControl, {passive: false});
 document.getElementById('zoom-in').addEventListener('click', zoomIn);
 document.getElementById('zoom-out').addEventListener('click', zoomOut);
+d3.select('#dropdown').on('change', handleChartChange);
 
 
 async function loadData() {
@@ -105,13 +107,6 @@ async function loadData() {
     });
 }
 
-function drawQuintileData() {
-    console.log("Drawing the quintile data bar chart");
-    console.log(quintileChartData);
-    updateBarChart(quintileChartData, "Education distribution of different Quintiles in US");
-    drawLegend();
-}
-
 function drawLocationData() {
     console.log("Drawing the location data bar chart");
     console.log(locationChartData);
@@ -119,12 +114,42 @@ function drawLocationData() {
     drawLegend();
 }
 
+function drawQuintileData() {
+    console.log("Drawing the quintile data bar chart");
+    console.log(quintileChartData);
+    updateBarChart(quintileChartData, "Education distribution of different Quintiles in US");
+    drawLegend();
+}
+
+function handleChartChange() {
+    const selectedValue = d3.select('#dropdown').node().value;
+    console.log(selectedValue);
+    if (selectedValue == 'option1') {
+        updateBarColors({
+            'Block1': '#0D3B66',
+            'Block2': '#14466A',
+            'Block3': '#1E6F72',
+            'Block4': '#3C8DAD',
+            'Block5': '#28AFB0'
+            });
+    } 
+    else if (selectedValue == 'option2') {
+        updateBarColors({
+            'Block1': '#FF4136',
+            'Block2': '#0074D9', 
+            'Block3': '#2ECC40', 
+            'Block4': '#FFDC00', 
+            'Block5': '#E6E6E6'
+            });
+    }
+}
+
 function updateBarChart(data, title = "") {
     console.log("xScale:", xScale);
     console.log("yScale:", yScale);
 
     const blocks = ['Block1', 'Block2', 'Block3', 'Block4', 'Block5'];
-    const colorScale = d3.scaleOrdinal()
+    colorScale = d3.scaleOrdinal()
     .domain(['Block1', 'Block2', 'Block3', 'Block4', 'Block5'])
     .range(['#0D3B66', '#14466A', '#1E6F72', '#3C8DAD', '#28AFB0']);
 
@@ -198,6 +223,16 @@ function updateBarChart(data, title = "") {
     }
 }
 
+function updateBarColors(blockColorMapping) {
+    const blocks = ['Block1', 'Block2', 'Block3', 'Block4', 'Block5'];
+    const updatedColors = blocks.map(block => blockColorMapping[block] || colorScale(block));
+    colorScale.range(updatedColors);
+    chart.selectAll(".bar-group")
+        .transition()
+        .duration(500)
+        .attr("fill", d => colorScale(d.key));
+}
+
 function drawLegend() {
     let blocks;
     if (chartNum == 1) {
@@ -244,9 +279,6 @@ function drawLegend() {
 
     console.log("draw legend done");
 }
-
-  
-  
 
 function forwardClicked() {
     if (keyframeIndex < keyframes.length - 1) {
@@ -406,11 +438,11 @@ function zoomOut() {
     }
 }
 
-async function initialise() {
+async function initialize() {
     await loadData();
     initialiseSVG();
     drawKeyframe(keyframeIndex);
 }
 
 
-initialise();
+initialize();
