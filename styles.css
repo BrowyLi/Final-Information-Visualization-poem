@@ -166,6 +166,7 @@ svg {
 
 #legend-svg{
   background-color: #5d7f97;
+  overflow: auto;
 }
 
 .bar rect {

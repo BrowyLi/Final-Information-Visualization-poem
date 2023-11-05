@@ -200,42 +200,52 @@ function updateBarChart(data, title = "") {
 }
 
 function drawLegend() {
-    const blocks = ['Block1', 'Block2', 'Block3', 'Block4', 'Block5'];
-    const colorScale = d3.scaleOrdinal()
-      .domain(blocks)
-      .range(['#0D3B66', '#14466A', '#1E6F72', '#3C8DAD', '#28AFB0']);
-    const legendSvg = d3.select("#legend-svg");
+    let blocks;
+    if (chartNum == 1) {
+        blocks = ["Less than high school", "High school", "Some college", "Associate degree", "Bachelor's degree or higher"];
+    } else if (chartNum == 2) {
+        blocks = ["Primary completion rate", "Lower secondary completion rate", 
+        "Upper secondary completion rate", "Lower sec comp rate for age 15-24", "Upper se comp rate for age 20-29"];
+    }
 
+    const colorScale = d3.scaleOrdinal()
+        .domain(blocks)
+        .range(['#0D3B66', '#14466A', '#1E6F72', '#3C8DAD', '#28AFB0']);
+    const legendSvg = d3.select("#legend-svg");
     const legendMargin = { top: 10, left: 20, bottom: 10, right: 20 };
     const legendItemSize = 18;
-    const legendSpacing = 6; 
-    const legendWidth = +legendSvg.style('width').replace('px', '');
+    const legendSpacing = 6;
     const legendHeight = blocks.length * (legendItemSize + legendSpacing);
+
+    legendSvg.selectAll("*").remove();
+
     legendSvg.attr("height", legendHeight + legendMargin.top + legendMargin.bottom);
-  
+
     const legend = legendSvg.append("g")
-      .attr("transform", `translate(${legendMargin.left},${legendMargin.top})`);
+        .attr("transform", `translate(${legendMargin.left},${legendMargin.top})`);
 
     legend.selectAll("rect")
-      .data(blocks)
-      .enter()
-      .append("rect")
-      .attr("width", legendItemSize)
-      .attr("height", legendItemSize)
-      .attr("y", (d, i) => i * (legendItemSize + legendSpacing))
-      .style("fill", colorScale);
-  
+        .data(blocks)
+        .enter()
+        .append("rect")
+        .attr("width", legendItemSize)
+        .attr("height", legendItemSize)
+        .attr("y", (d, i) => i * (legendItemSize + legendSpacing))
+        .style("fill", colorScale);
+
     legend.selectAll("text")
-      .data(blocks)
-      .enter()
-      .append("text")
-      .attr("x", legendItemSize + legendSpacing)
-      .attr("y", (d, i) => i * (legendItemSize + legendSpacing) + (legendItemSize / 2))
-      .style("alignment-baseline", "central")
-      .text(d => d);
-    
-    console.log("draw legend done")
-  }
+        .data(blocks)
+        .enter()
+        .append("text")
+        .attr("x", legendItemSize + legendSpacing)
+        .attr("y", (d, i) => i * (legendItemSize + legendSpacing) + (legendItemSize / 2))
+        .attr("dy", "0.35em")
+        .style("alignment-baseline", "middle")
+        .text(d => d);
+
+    console.log("draw legend done");
+}
+
   
   
 
