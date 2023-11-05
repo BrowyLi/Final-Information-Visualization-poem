@@ -219,3 +219,14 @@ svg {
   flex: 1;
 }
 
+#tooltip {
+  display: none;
+  position: absolute;
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.75);
+  color: white;
+  border-radius: 5px;
+  pointer-events: none; /* This makes it so the tooltip doesn't interfere with mouse events */
+  z-index: 1000;
+}
+

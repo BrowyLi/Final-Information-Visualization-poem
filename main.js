@@ -166,6 +166,18 @@ function updateBarChart(data, title = "") {
         chartNum = 2;
     }
 
+    let tooltip = d3.select("#tooltip");
+    if (tooltip.empty()) {
+        tooltip = d3.select("body").append("div")
+            .attr("id", "tooltip")
+            .style("position", "absolute")
+            .style("display", "none")
+            .style("background", "#fff")
+            .style("border", "1px solid #000")
+            .style("padding", "10px")
+            .style("pointer-events", "none");
+    }
+
     const maxVal = d3.max(series, d => d3.max(d, d => d[1]));
     yScale.domain([0, maxVal]).nice();
 
@@ -176,6 +188,8 @@ function updateBarChart(data, title = "") {
         .attr("class", "bar-group")
         .attr("fill", (d, i) => colorScale(i));
 
+    barGroups.exit().remove();
+
     if (data.length > 0 && data[0].hasOwnProperty('Location')) {
         chart.selectAll(".bar-group")
         .selectAll("rect")
@@ -184,7 +198,20 @@ function updateBarChart(data, title = "") {
         .attr("x", d => xScale(d.data.Location))
         .attr("width", xScale.bandwidth())
         .attr("y", d => yScale(d[1]))
-        .attr("height", d => yScale(d[0]) - yScale(d[1]));
+        .attr("height", d => yScale(d[0]) - yScale(d[1]))
+        .on("mouseover", function(event, d) {
+            d3.select(this).style("opacity", 0.7);
+            const dataString = Object.entries(d.data).map(([key, value]) => `${key}: ${value}`).join('<br>');
+            tooltip
+                .html(dataString)
+                .style('display', 'block')
+                .style('left', `${event.pageX + 10}px`)
+                .style('top', `${event.pageY + 10}px`);
+        })
+        .on("mouseout", function() {
+            d3.select(this).style("opacity", 1);
+            tooltip.style('display', 'none');
+        });
     } 
    
     else if (data.length > 0 && data[0].hasOwnProperty('Wealth')) {
@@ -195,7 +222,20 @@ function updateBarChart(data, title = "") {
         .attr("x", d => xScale(d.data.Wealth))
         .attr("width", xScale.bandwidth())
         .attr("y", d => yScale(d[1]))
-        .attr("height", d => yScale(d[0]) - yScale(d[1]));
+        .attr("height", d => yScale(d[0]) - yScale(d[1]))
+        .on("mouseover", function(event, d) {
+            d3.select(this).style("opacity", 0.7);
+            const dataString = Object.entries(d.data).map(([key, value]) => `${key}: ${value}`).join('<br>');
+            tooltip
+                .html(dataString)
+                .style('display', 'block')
+                .style('left', `${event.pageX + 10}px`)
+                .style('top', `${event.pageY + 10}px`);
+        })
+        .on("mouseout", function() {
+            d3.select(this).style("opacity", 1);
+            tooltip.style('display', 'none');
+        });
     }
 
     chart.select(".x-axis")
