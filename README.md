@@ -37,13 +37,13 @@ Alternatively, you can also view your project by opening the `index.html` file d
 ## Interactive functions
 This interactive poetry visualization tool allows you to explore poems dynamically through a web interface. Here's how you can interact with the visualization:
 
-#### Navigation Controls
+### Navigation Controls
 
 - **Line Navigation**: 
   - Click the single triangular button on the right or left side of the poem to move one line forward or backward.
   - Use the double triangular button to jump to the next or previous verse.
 
-#### Chart Interaction
+### Chart Interaction
 
 - **Data Display**: 
   - Hover over the blocks within the bar to display detailed data for that specific block.
@@ -51,7 +51,7 @@ This interactive poetry visualization tool allows you to explore poems dynamical
 - **Color Modes**: 
   - Use the dropdown at the top-right of the chart to switch between normal and contrast colors for the bars and blocks. This feature enhances visibility according to your preference.
 
-#### Legend and Zoom
+### Legend and Zoom
 
 - **Legend**: 
   - The legend on the left side provides a key to decipher the meaning of each colored block within the chart.
