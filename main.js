@@ -20,7 +20,8 @@ let keyframes = [
     },
     {
         activeVerse: 2,
-        activeLines: [1]
+        activeLines: [1],
+        svgUpdate: [drawPrimaryData, ()=>updateLeftColumnContent(1)]
     },
     {
         activeVerse: 2,
@@ -72,6 +73,7 @@ let keyframes = [
 let svg = d3.select("#svg");
 let quintileChartData;
 let locationChartData;
+let primaryChartData;
 let chartNum;
 let colorScale;
 
@@ -110,6 +112,9 @@ async function loadData() {
     await d3.json("data/location.json").then(data => {
         locationChartData = data;
     });
+    await d3.json("data/primary.json").then(data => {
+        primaryChartData = data;
+    });
 }
 
 function drawLocationData() {
@@ -117,6 +122,12 @@ function drawLocationData() {
     console.log(locationChartData);
     updateBarChart(locationChartData, "Education distribution of different Locations in US");
     drawLegend();
+}
+
+function drawPrimaryData() {
+    console.log("Drawing the primary data bar chart");
+    console.log(primaryChartData);
+    updateBarChart2(primaryChartData, "Primary education completion of different Quintiles in US");
 }
 
 function drawQuintileData() {
@@ -164,6 +175,7 @@ function handleChartChange() {
 }
 
 function updateBarChart(data, title = "") {
+    chart.selectAll(".bar").remove();
     console.log("xScale:", xScale);
     console.log("yScale:", yScale);
 
@@ -263,6 +275,67 @@ function updateBarChart(data, title = "") {
         });
     }
 
+    chart.select(".x-axis")
+        .transition()
+        .duration(500)
+        .call(d3.axisBottom(xScale));
+
+    chart.select(".y-axis")
+        .transition()
+        .duration(500)
+        .call(d3.axisLeft(yScale));
+
+    if (title.length > 0) {
+        svg.select("#chart-title")
+            .transition()
+            .duration(250)
+            .style("opacity", 0)
+            .on("end", () => {
+                svg.select("#chart-title")
+                    .text(title)
+                    .transition()
+                    .duration(250)
+                    .style("opacity", 1);
+            });
+    }
+}
+
+function updateBarChart2(data, title = "") {
+    chart.selectAll(".bar-group").remove();
+    chartNum = 0;
+    console.log("xScale:", xScale);
+    console.log("yScale:", yScale);
+
+    xScale.domain(data.map(d => d.Wealth));
+    yScale.domain([0, d3.max(data, d => d.comp_prim_v2_m)]).nice();
+    const bars = chart.selectAll(".bar").data(data, d => d.Wealth);
+
+    bars.exit()
+        .transition()
+        .duration(500)
+        .attr("y", chartHeight)
+        .attr("height", 0)
+        .remove();
+
+    bars.transition()
+        .duration(500)
+        .attr("x", d => xScale(d.Wealth))
+        .attr("y", d => yScale(d.comp_prim_v2_m))
+        .attr("height", d => chartHeight - yScale(d.comp_prim_v2_m))
+        .attr("width", xScale.bandwidth());
+
+    bars.enter().append("rect")
+        .attr("class", "bar")
+        .attr("x", d => xScale(d.Wealth))
+        .attr("y", chartHeight)
+        .attr("width", xScale.bandwidth())
+        .attr("height", 0) 
+        .attr("fill", "#3C8DAD")
+        .transition() 
+        .duration(1000) 
+        .attr("y", d => yScale(d.comp_prim_v2_m))
+        .attr("height", d => chartHeight - yScale(d.comp_prim_v2_m));
+        
     chart.select(".x-axis")
         .transition()
         .duration(500)
@@ -529,7 +602,9 @@ function zoomIn() {
     if (chartNum == 1) {
         updateBarChart(locationChartData);
     } 
-   
+    else if (chartNum == 0){
+        updateBarChart2(primaryChartData);
+    }
     else if (chartNum == 2) {
         updateBarChart(quintileChartData);
     }
@@ -541,7 +616,9 @@ function zoomOut() {
     if (chartNum == 1) {
         updateBarChart(locationChartData);
     } 
-   
+    else if (chartNum == 0){
+        updateBarChart2(primaryChartData);
+    }
     else if (chartNum == 2) {
         updateBarChart(quintileChartData);
     }
