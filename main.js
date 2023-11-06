@@ -20,8 +20,7 @@ let keyframes = [
     },
     {
         activeVerse: 2,
-        activeLines: [1],
-        svgUpdate: [drawQuintileData, ()=>updateLeftColumnContent(1)]
+        activeLines: [1]
     },
     {
         activeVerse: 2,
@@ -37,7 +36,8 @@ let keyframes = [
     },
     {
         activeVerse: 3,
-        activeLines: [1]
+        activeLines: [1],
+        svgUpdate: [drawQuintileData, ()=>updateLeftColumnContent(1)]
     },
     {
         activeVerse: 3,
