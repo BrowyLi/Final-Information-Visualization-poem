@@ -191,9 +191,17 @@ function updateBarChart(data, title = "") {
     console.log("yScale:", yScale);
 
     const blocks = ['Block1', 'Block2', 'Block3', 'Block4', 'Block5'];
-    colorScale = d3.scaleOrdinal()
-    .domain(['Block1', 'Block2', 'Block3', 'Block4', 'Block5'])
-    .range(['#0D3B66', '#14466A', '#1E6F72', '#3C8DAD', '#28AFB0']);
+    const selectedValue = d3.select('#dropdown').node().value;
+    if (selectedValue == 'option1') {
+        colorScale = d3.scaleOrdinal()
+        .domain(['Block1', 'Block2', 'Block3', 'Block4', 'Block5'])
+        .range(['#0D3B66', '#14466A', '#1E6F72', '#3C8DAD', '#28AFB0']);
+    }
+    else if (selectedValue == 'option2') {
+        colorScale = d3.scaleOrdinal()
+        .domain(['Block1', 'Block2', 'Block3', 'Block4', 'Block5'])
+        .range(['#FF4136','#0074D9', '#2ECC40', '#FFDC00', '#E6E6E6']);
+    }
 
     const series = d3.stack().keys(blocks)(data);
     console.log("Stacked data", series);
