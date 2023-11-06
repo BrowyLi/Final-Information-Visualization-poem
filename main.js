@@ -38,7 +38,7 @@ let keyframes = [
     {
         activeVerse: 3,
         activeLines: [1],
-        svgUpdate: [drawQuintileData, ()=>updateLeftColumnContent(1)]
+        svgUpdate: [drawQuintileData, ()=>updateLeftColumnContent(2)]
     },
     {
         activeVerse: 3,
@@ -83,13 +83,23 @@ let chartHeight;
 let xScale;
 let yScale;
 let textData = [
-    "Introduction: \n \There are discernible distinctions between rural and urban places in the US educational landscape.\
+    "Introduction: \n There are discernible distinctions between rural and urban places in the US educational landscape.\
     There is a slight greater rate of early educational attrition in rural areas (13% against 11%), when the population has less than a high school education.\
     Additionally, 35% of high school graduates in rural areas complete their education, compared to 25% in metropolitan areas. Higher education reverses this trend:\
     in rural areas, just 10% of people have an associate degree, and 21% have a bachelor's degree or beyond; in urban areas, these numbers jump to 9% and a significantly higher 36%, respectively.\
     Based on available statistics, it appears that a bigger percentage of people live in urban regions than in less populous places.\
     This could potentially be attributed to the variety of opportunities and easier access to higher education that these areas offer.\ ",
-    "Introduction: \n This chart"
+    "Introduction: \n This chart offers a compelling glimpse into the correlation between wealth distribution and a certain primary completion or compliance metric.\
+    It divides the population into five wealth quintiles, from the least to the most affluent, each quintile reflecting a different sector of the population. \
+    We can watch and examine the subtleties of how wealth could influence or be correlated with completion or adherence rates to a main service, initiative, or program thanks to this stratification.\
+    The values show a slight upward trend as wealth increases, but they hover close to unity across all quintiles. \
+    These data suggest a larger story of socioeconomic factors contributing to near-universal completion or compliance rates, \
+    and they offer a quantitative framework for investigating the relationship between societal outcomes and financial well-being.",
+    "Introduction: \n The dataset tells an engaging story about how wealth and educational attainment are related.\
+    The wealthiest quintile shows the greatest completion rates, particularly in the upper secondary completion rate for ages 20–29.\
+    A strong positive link is shown between the wealth quintiles and completion rates across all educational levels.\
+    This pattern demonstrates a socioeconomic gradient in academic success, with differences becoming more obvious at higher education levels.\
+    The data also shows a trend of people in wealthier quintiles who are older and finish school later in life, indicating that wealth acts as a buffer to support education over an extended length of time."
   ];
 
 let isPie = false;
@@ -128,6 +138,7 @@ function drawPrimaryData() {
     console.log("Drawing the primary data bar chart");
     console.log(primaryChartData);
     updateBarChart2(primaryChartData, "Primary education completion of different Quintiles in US");
+    removeLegend();
 }
 
 function drawQuintileData() {
@@ -219,7 +230,12 @@ function updateBarChart(data, title = "") {
         .attr("class", "bar-group")
         .attr("fill", (d, i) => colorScale(i));
 
-    barGroups.exit().remove();
+    barGroups.exit()
+        .transition()
+        .duration(500)
+        .attr("y", chartHeight)
+        .attr("height", 0)
+        .remove();
 
     if (data.length > 0 && data[0].hasOwnProperty('Location')) {
         chart.selectAll(".bar-group")
@@ -331,8 +347,6 @@ function updateBarChart2(data, title = "") {
         .attr("width", xScale.bandwidth())
         .attr("height", 0) 
         .attr("fill", "#3C8DAD")
-        .transition() 
-        .duration(1000) 
         .attr("y", d => yScale(d.comp_prim_v2_m))
         .attr("height", d => chartHeight - yScale(d.comp_prim_v2_m));
         
@@ -392,6 +406,11 @@ function updateBarColors(blockColorMapping) {
         .transition()
         .duration(500)
         .attr("fill", d => colorScale(d.key));
+}
+
+function removeLegend(){
+    const legendSvg = d3.select("#legend-svg");
+    legendSvg.selectAll("*").remove();
 }
 
 function drawLegend() {
